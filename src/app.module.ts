@@ -1,20 +1,29 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config'; // ★ 추가됨
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ChallengesModule } from './challenges/challenges.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
-    // 1. 데이터베이스 연결 설정
-    TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'dreamhack.db', // 프로젝트 폴더에 이 파일이 자동으로 생깁니다.
-      entities: [__dirname + '/**/*.entity{.ts,.js}'], // 모든 entity 파일을 자동으로 읽어옵니다.
-      synchronize: true, // 개발 중엔 true (코드가 바뀌면 DB 테이블도 알아서 고쳐줌)
+    // 1. 환경변수 모듈 설정 (제일 위에 있어야 함)
+    ConfigModule.forRoot({
+      isGlobal: true,
     }),
-    // 2. 기능 모듈
+    // 2. 데이터베이스 연결 (환경변수에서 주소 가져옴)
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      url: process.env.DATABASE_URL, // ★ .env에 있는 주소를 가져와라!
+      autoLoadEntities: true,
+      synchronize: true, // 개발용: 테이블 자동 생성
+      ssl: {
+        rejectUnauthorized: false, // Neon 접속 필수 설정
+      },
+    }),
     ChallengesModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
