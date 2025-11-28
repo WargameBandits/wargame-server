@@ -1,13 +1,24 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
+let app; // 서버를 메모리에 캐시(저장)해두기 위함
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  if (!app) {
+    app = await NestFactory.create(AppModule);
 
-  // 1. CORS 허용 (팀원 프론트엔드가 접속할 수 있게 문 열어주기)
-  app.enableCors();
+    // CORS 설정 (프론트엔드 접속 허용)
+    app.enableCors();
 
-  // 2. 포트 설정 (Render가 주는 PORT가 있으면 그거 쓰고, 없으면 3000번 써라)
-  await app.listen(process.env.PORT || 3000);
+    // Vercel은 app.listen() 대신 app.init()을 사용합니다.
+    await app.init();
+  }
+  return app;
 }
-bootstrap();
+
+// ★ Vercel이 실행할 수 있게 함수를 내보냅니다 (Export)
+export default async (req, res) => {
+  const app = await bootstrap();
+  const instance = app.getHttpAdapter().getInstance();
+  return instance(req, res);
+};
