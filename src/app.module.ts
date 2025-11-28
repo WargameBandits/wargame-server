@@ -7,6 +7,8 @@ import { ChallengesModule } from './modules/challenges/challenges.module';
 import { UsersModule } from './modules/users/users.module';
 import { SubmissionsModule } from './modules/submissions/submissions.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { FirstBloodsModule } from './modules/first-bloods/first-bloods.module';
+import { LeaderboardModule } from './modules/leaderboard/leaderboard.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { AuthModule } from './modules/auth/auth.module';
     UsersModule,
     SubmissionsModule,
     AuthModule,
+    FirstBloodsModule,
+    LeaderboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],
