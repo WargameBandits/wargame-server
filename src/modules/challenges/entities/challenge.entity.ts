@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToOne } from 'typeorm';
 import { ChallengeFile } from './challenge-file.entity';
 import { Submission } from '../../submissions/entities/submission.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Challenge {
@@ -10,23 +11,31 @@ export class Challenge {
     @Column()
     title: string;
 
-    @Column()
+    @Column('text')
     description: string;
 
     @Column()
-    score: number; // 배점
+    flagHash: string;
 
     @Column()
-    flag: string; // 정답
+    points: number;
 
+    // ★★★ [여기 추가] 이 부분이 빠져서 에러가 났던 겁니다!
     @Column()
-    category: string; // Web, Pwn 등
+    category: string;
 
-    // [관계] 한 문제는 여러 개의 첨부파일을 가질 수 있다.
+    @CreateDateColumn()
+    createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt: Date;
+
+    @ManyToOne(() => User)
+    creator: User;
+
     @OneToMany(() => ChallengeFile, (file) => file.challenge)
     files: ChallengeFile[];
 
-    // [관계] 한 문제에 대해 여러 제출이 있을 수 있다.
     @OneToMany(() => Submission, (submission) => submission.challenge)
     submissions: Submission[];
 }

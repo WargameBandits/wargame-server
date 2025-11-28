@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, OneToMany } from 'typeorm';
 import { UserScore } from './user-score.entity';
 import { Submission } from '../../submissions/entities/submission.entity';
 
@@ -8,16 +8,28 @@ export class User {
     id: number;
 
     @Column({ unique: true })
-    username: string;
+    username: string; // 깃허브 아이디와 동일하게 사용
 
-    @Column({ default: 0 })
-    totalScore: number; // 현재 총점
+    @Column({ nullable: true })
+    email: string;
 
-    // [관계] 유저는 여러 개의 점수 기록을 가질 수 있다.
-    @OneToMany(() => UserScore, (score) => score.user)
-    scoreLogs: UserScore[];
+    @Column({ nullable: true })
+    githubId: string; // ★ GitHub OAuth 필수 필드
 
-    // [관계] 유저는 여러 번 답을 제출할 수 있다.
+    @Column({ default: 'user' }) // 'admin' | 'user'
+    role: string;
+
+    @CreateDateColumn()
+    createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt: Date;
+
+    // [관계] 유저 : 점수집계 = 1 : 1
+    @OneToOne(() => UserScore, (score) => score.user)
+    scoreInfo: UserScore;
+
+    // [관계] 유저 : 제출기록 = 1 : N
     @OneToMany(() => Submission, (submission) => submission.user)
     submissions: Submission[];
 }

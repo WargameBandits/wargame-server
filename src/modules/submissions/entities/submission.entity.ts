@@ -8,19 +8,16 @@ export class Submission {
     id: number;
 
     @Column()
-    inputFlag: string; // 유저가 입력한 답
-
-    @Column()
-    isCorrect: boolean; // 정답 여부 (true/false)
+    isCorrect: boolean; // 정답 여부
 
     @CreateDateColumn()
-    submittedAt: Date; // 제출 시간
+    submittedAt: Date;
 
-    // [관계] 누가 제출했나?
+    // 누가?
     @ManyToOne(() => User, (user) => user.submissions)
     user: User;
 
-    // [관계] 어떤 문제를 풀었나?
+    // 어떤 문제를?
     @ManyToOne(() => Challenge, (challenge) => challenge.submissions)
     challenge: Challenge;
 }
