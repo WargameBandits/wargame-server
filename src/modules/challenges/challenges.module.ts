@@ -3,9 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm'; // 이거 추가됨
 import { ChallengesService } from './challenges.service';
 import { ChallengesController } from './challenges.controller';
 import { Challenge } from './entities/challenge.entity'; // 이것도 추가됨
+import { ChallengeFile } from './entities/challenge-file.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Challenge])], // "이 모듈에서 Challenge 테이블 쓸거야!" 라고 선언
+  imports: [TypeOrmModule.forFeature([Challenge, ChallengeFile])], // "이 모듈에서 Challenge 테이블 쓸거야!" 라고 선언
   controllers: [ChallengesController],
   providers: [ChallengesService],
 })

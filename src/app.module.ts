@@ -3,8 +3,9 @@ import { ConfigModule } from '@nestjs/config'; // ★ 추가됨
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ChallengesModule } from './challenges/challenges.module';
-import { UsersModule } from './users/users.module';
+import { ChallengesModule } from './modules/challenges/challenges.module';
+import { UsersModule } from './modules/users/users.module';
+import { SubmissionsModule } from './modules/submissions/submissions.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { UsersModule } from './users/users.module';
     }),
     ChallengesModule,
     UsersModule,
+    SubmissionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
