@@ -9,11 +9,11 @@ import { UserScore } from '../users/entities/user-score.entity';
 
 @Module({
   imports: [
-    HttpModule, // axios용
-    TypeOrmModule.forFeature([User, UserScore]), // DB 사용 허락
+    HttpModule, // Axios
+    TypeOrmModule.forFeature([User, UserScore]), // DB
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'secretKey', // 환경변수 사용 권장
-      signOptions: { expiresIn: '12h' }, // 토큰 12시간 유효
+      secret: process.env.JWT_SECRET || 'secretKey',
+      signOptions: { expiresIn: '1d' }, // 토큰 유효기간 1일
     }),
   ],
   controllers: [AuthController],

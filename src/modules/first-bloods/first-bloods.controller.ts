@@ -13,4 +13,5 @@ export class FirstBloodsController {
   async getFirstBlood(@Param('challengeId', ParseIntPipe) challengeId: number) {
     return this.firstBloodsService.getFirstBloodByChallenge(challengeId);
   }
+  
 }
